@@ -29,3 +29,4 @@ openai-*.tar
 /.direnv/
 /.nix-*/
 /config/*.secret.exs
+/.vscode/

@@ -16,4 +16,6 @@ defmodule Openai.Client do
   end
 
   defdelegate create_image(payload), to: Image, as: :create
+  defdelegate create_image_variation(payload), to: Image, as: :create_variation
+  defdelegate edit_image(payload), to: Image, as: :edit
 end

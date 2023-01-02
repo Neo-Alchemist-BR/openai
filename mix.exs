@@ -23,7 +23,9 @@ defmodule Openai.MixProject do
   defp deps do
     [
       {:tesla, "~> 1.5"},
-      {:jason, ">= 0.0.0"}
+      {:jason, "~> 1.4"},
+      # Dev deps
+      {:ex_doc, "~> 0.29"}
     ]
   end
 end
