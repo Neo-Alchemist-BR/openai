@@ -1,5 +1,6 @@
-defmodule Openai.Schemas.Completions.Completions do
+defmodule Openai.Schemas.Out.Completions.Completions do
   @moduledoc """
+  Given a prompt, the model will return one or more predicted completions, and can also return the probabilities of alternative tokens at each position.
   """
 
   @typedoc """
@@ -170,10 +171,11 @@ defmodule Openai.Schemas.Completions.Completions do
           user: user
         }
 
-  @nullable_fields ~w(user logit_bias stop suffix logprobs)a
+  @nullable_fields ~w(stop suffix logprobs)a
 
   defstruct [
               prompt: "<|endoftext|>",
+              logit_bias: %{},
               best_of: 1,
               presence_penalty: 0,
               frequency_penalty: 0,
@@ -183,26 +185,26 @@ defmodule Openai.Schemas.Completions.Completions do
               model: "text-davinci-003",
               max_tokens: 16,
               stream: false,
-              echo: false
+              echo: false,
+              user: ""
             ] ++ @nullable_fields
 
-  @spec new(prompt(), keyword | map) :: __MODULE__.t()
-  def new(prompt \\ "<|endoftext|>", opts \\ [])
+  use Vex.Struct
+  use ExConstructor
 
-  def new(prompt, options) when is_map(options) do
-    struct(__MODULE__, Map.put(options, :prompt, prompt))
-  end
+  validates(:prompt, &is_binary/1)
+  validates(:model, presence: true, by: &is_binary/1)
+  validates(:logit_bias, by: &is_map/1)
 
-  def new(prompt, options) when is_list(options) do
-    struct(__MODULE__, Keyword.put(options, :prompt, prompt))
-  end
+  validates(:frequency_penalty,
+    number: [greater_than_or_equal_to: -2.0, less_than_or_equal_to: 2.0]
+  )
 
-  @spec set_max_tokens(__MODULE__.t(), max_tokens()) :: __MODULE__.t()
+  @spec set_max_tokens(__MODULE__.t(), max_tokens() | any()) :: __MODULE__.t()
   def set_max_tokens(completion, max_tokens) when max_tokens in 0..2_048 do
     %{completion | max_tokens: max_tokens}
   end
 
-  @spec set_max_tokens(__MODULE__.t(), any()) :: __MODULE__.t()
   def set_max_tokens(completion, _max_tokens), do: completion
 
   @spec set_logprobs(__MODULE__.t(), logprobs() | nil) :: __MODULE__.t()

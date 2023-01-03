@@ -30,3 +30,4 @@ openai-*.tar
 /.nix-*/
 /config/*.secret.exs
 /.vscode/
+/.devcontainer/

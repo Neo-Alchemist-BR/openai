@@ -13,10 +13,7 @@
       let
         pkgs = nixpkgs.legacyPackages.x86_64-linux;
 
-        exDev = pkgs.beam.packages.erlangR25.elixir.override {
-          version = "1.14.1";
-          minimumOTPVersion = "25";
-        };
+        exDev = pkgs.beam.packages.erlangR25.elixir;
       in {
         devShell = pkgs.mkShell {
           name = "orchestrator_cx_ms";

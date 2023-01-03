@@ -5,7 +5,7 @@ defmodule Openai.MixProject do
     [
       app: :openai,
       version: "0.1.0",
-      elixir: "~> 1.13",
+      elixir: "~> 1.12",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -14,7 +14,7 @@ defmodule Openai.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :vex],
       mod: {Openai.Application, []}
     ]
   end
@@ -24,8 +24,11 @@ defmodule Openai.MixProject do
     [
       {:tesla, "~> 1.5"},
       {:jason, "~> 1.4"},
+      {:exconstructor, "~> 1.2.7"},
+      {:vex, "~> 0.9.0"},
       # Dev deps
-      {:ex_doc, "~> 0.29"}
+      {:ex_doc, "~> 0.29"},
+      {:faker, ">= 0.0.0", only: [:dev, :test]}
     ]
   end
 end
