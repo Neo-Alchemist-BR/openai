@@ -1,4 +1,4 @@
-defmodule Openai.Schemas.Out.Edits.Edit do
+defmodule Openai.Schemas.Out.Edits.Create do
   @moduledoc """
   Given a prompt and an instruction, the model will return an edited version of the prompt.
   """

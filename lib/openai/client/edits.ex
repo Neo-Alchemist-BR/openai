@@ -4,14 +4,11 @@ defmodule Openai.Client.Edits do
   """
   use Openai.Client
 
-  alias Openai.Schemas.Out.Edits.Edit
+  alias Openai.Schemas.Out.Edits.Create
 
-  @spec call(Edit.t()) :: {:error, any} | {:ok, Tesla.Env.t()}
+  @spec edit(Create.t()) :: {:error, any} | {:ok, Tesla.Env.t()}
   @doc """
   Creates a new edit for the provided input, instruction, and parameters
   """
-  def call(payload) do
-    path = "/v1/edits"
-    post(path, payload)
-  end
+  def edit(payload), do: call("/v1/edits", payload)
 end

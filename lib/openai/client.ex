@@ -1,5 +1,5 @@
 defmodule Openai.Client do
-  alias Openai.Client.{Completions, Edits, Image, Models}
+  alias Openai.Client.{Completions, Embeddings, Edits, Image, Models}
 
   defmacro __using__(_opts) do
     quote do
@@ -12,6 +12,15 @@ defmodule Openai.Client do
       ])
 
       plug(Tesla.Middleware.JSON)
+
+      @spec call(binary(), Struct.t()) :: {:error, any} | {:ok, Tesla.Env.t()}
+      def call(path, payload) do
+        if Vex.valid?(payload) do
+          post(path, payload)
+        else
+          {:error, :bad_request}
+        end
+      end
     end
   end
 
@@ -45,8 +54,12 @@ defmodule Openai.Client do
           n: integer(),
           top_p: number()
         }) :: {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate edits(payload), to: Edits, as: :call
+  defdelegate edits(payload), to: Edits, as: :edit
+
   # Embeddings
+  @spec create_embeddings(%{model: binary(), input: binary() | list(binary()), user: binary()}) ::
+          {:error, any} | {:ok, Tesla.Env.t()}
+  defdelegate create_embeddings(payload), to: Embeddings, as: :create
 
   # Engines
 
