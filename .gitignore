@@ -28,6 +28,9 @@ openai-*.tar
 # NIX
 /.direnv/
 /.nix-*/
+
+# Local Config
 /config/*.secret.exs
 /.vscode/
 /.devcontainer/
+/.env

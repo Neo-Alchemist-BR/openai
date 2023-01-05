@@ -1,0 +1,43 @@
+<!-- livebook:{"autosave_interval_s":60,"persist_outputs":true} -->
+
+# Testing Openai
+
+```elixir
+Mix.install(
+  [
+    {:openai, github: "Neo-Alchemist-BR/openai_elixir", branch: "main"}
+  ],
+  config: [
+    openai: [
+      api_key: System.get_env("LB_OPENAI_KEY")
+    ]
+  ]
+)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+* Getting openai (https://github.com/Neo-Alchemist-BR/openai_elixir.git - origin/main)
+fatal: unable to access 'https://github.com/Neo-Alchemist-BR/openai_elixir.git/': Could not resolve host: github.com
+```
+
+## Section
+
+```elixir
+Application.get_all_env(:openai)
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"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"
+```
+
+```elixir
+%{prompt: "abobora"}
+|> Openai.Schemas.Out.Images.Create.new()
+|> dbg()
+|> Openai.Client.Image.create()
+|> dbg()
+```
