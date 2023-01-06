@@ -1,3 +1,3 @@
 import Config
 
-import_config "#{config_env()}.exs"
+if File.exists?("config/dev.secret.exs"), do: import_config("dev.secret.exs")
