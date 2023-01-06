@@ -147,7 +147,7 @@ defmodule Openai.Schemas.Out.Completions.Completions do
 
   @typedoc """
     - Optional \n
-  A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. Learn more.
+  A unique identifier representing your end-user, which can help Openai to monitor and detect abuse. Learn more.
   """
 
   @type user :: binary()

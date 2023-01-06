@@ -38,6 +38,6 @@ Application.get_all_env(:openai)
 %{prompt: "abobora"}
 |> Openai.Schemas.Out.Images.Create.new()
 |> dbg()
-|> Openai.Client.Image.create()
+|> Openai.Client.Images.create()
 |> dbg()
 ```

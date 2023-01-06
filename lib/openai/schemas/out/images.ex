@@ -48,7 +48,7 @@ defmodule Openai.Schemas.Out.Images do
 
   @typedoc """
     - Optional
-  A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. [Learn More](https://beta.openai.com/docs/guides/safety-best-practices/end-user-ids).
+  A unique identifier representing your end-user, which can help Openai to monitor and detect abuse. [Learn More](https://beta.openai.com/docs/guides/safety-best-practices/end-user-ids).
   """
 
   @type user :: String.t()

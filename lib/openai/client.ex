@@ -1,88 +1,73 @@
 defmodule Openai.Client do
-  alias Openai.Client.{Completions, Embeddings, Edits, Image, Models}
+  use Tesla
 
-  defmacro __using__(_opts) do
-    quote do
-      use Tesla
+  alias Openai.Client.{Completions, Embeddings, Edits, Images, Models}
+  alias Openai.Config
 
-      plug(Tesla.Middleware.BaseUrl, "https://api.openai.com")
+  alias Openai.Schemas.In.Error
+  alias Openai.Schemas.Out
+  alias Out.Images.Create, as: CreateImage
 
-      plug(Tesla.Middleware.Headers, [
-        {"authorization", "Bearer " <> Application.get_env(:openai, :api_key)}
-      ])
+  plug(Tesla.Middleware.BaseUrl, Config.api_url())
 
-      plug(Tesla.Middleware.JSON)
+  plug(Tesla.Middleware.Headers, request_headers())
 
-      @spec call(binary(), Struct.t()) :: {:error, any} | {:ok, Tesla.Env.t()}
-      def call(path, payload) do
-        if Vex.valid?(payload) do
-          post(path, payload)
-        else
-          {:error, :bad_request}
-        end
-      end
+  plug(Tesla.Middleware.JSON)
+
+  @spec call(binary()) :: {:error, any} | {:ok, map()}
+  def call(path) do
+    path
+    |> get()
+    |> handle_response()
+  end
+
+  @spec call(binary(), map()) :: {:error, any} | {:ok, map()}
+  def call(path, payload) do
+    if Vex.valid?(payload) do
+      path
+      |> post(payload)
+      |> handle_response()
+    else
+      {:error, :bad_request}
     end
   end
 
-  # Completions
-  @spec completions(%{
-          best_of: integer,
-          echo: boolean,
-          frequency_penalty: number,
-          logit_bias: map,
-          logprobs: nil | integer,
-          max_tokens: integer,
-          model: binary,
-          n: integer,
-          presence_penalty: number,
-          prompt: binary | [binary],
-          stop: nil | binary | [binary],
-          stream: boolean,
-          suffix: nil | binary,
-          temperature: number,
-          top_p: number,
-          user: binary
-        }) :: {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate completions(payload), to: Completions
+  @spec call(binary(), map(), atom()) :: {:error, any} | {:ok, map()}
+  def call(path, payload, :multipart) do
+    path
+    |> post(payload)
+    |> handle_response()
+  end
 
-  # Edits
-  @spec edits(%{
-          model: binary,
-          instruction: binary,
-          input: binary,
-          temperature: number(),
-          n: integer(),
-          top_p: number()
-        }) :: {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate edits(payload), to: Edits, as: :edit
+  @spec handle_response(any) :: {:error, any} | {:ok, any}
+  def handle_response({:ok, %Tesla.Env{body: body, status: 200}}), do: {:ok, body}
 
-  # Embeddings
-  @spec create_embeddings(%{model: binary(), input: binary() | list(binary()), user: binary()}) ::
-          {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate create_embeddings(payload), to: Embeddings, as: :create
+  def handle_response({:ok, %Tesla.Env{body: body, status: status}}) when status in 400..499,
+    do: {:error, body}
 
-  # Engines
+  def handle_response(another_response) do
+    IO.inspect(another_response)
+    {:error, another_response}
+  end
 
-  # Files
+  def parse_error(error), do: Error.parse(error)
 
-  # Fine Tunes
+  # Client Config
+  def add_organization_header(headers) do
+    if Config.org_key() do
+      [{"OpenAI-Organization", Config.org_key()} | headers]
+    else
+      headers
+    end
+  end
 
-  # Image
-  @spec create_image(%{n: integer, prompt: binary, response_format: binary, size: binary}) ::
-          {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate create_image(payload), to: Image, as: :create
+  def request_headers do
+    [
+      bearer(),
+      {"Content-type", "application/json"}
+    ]
+    |> add_organization_header()
+  end
 
-  @spec create_image_variation(any) :: {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate create_image_variation(payload), to: Image, as: :create_variation
-
-  @spec edit_image(any) :: {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate edit_image(payload), to: Image, as: :edit
-
-  # Models
-  @spec list_models :: {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate list_models(), to: Models, as: :list
-
-  @spec describe_model(binary) :: {:error, any} | {:ok, Tesla.Env.t()}
-  defdelegate describe_model(model), to: Models, as: :describe
-  # Moderations
+  def bearer(), do: {"Authorization", "Bearer #{Config.api_key()}"}
 end

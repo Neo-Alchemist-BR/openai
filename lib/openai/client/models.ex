@@ -3,17 +3,19 @@ defmodule Openai.Client.Models do
   List and describe the various models available in the API. You can refer to the Models documentation to understand what models are available and the differences between them.
   """
 
-  use Openai.Client
+  alias Openai.Client
 
-  @spec list :: {:error, any} | {:ok, Tesla.Env.t()}
+  @url "/v1/models"
+
+  @spec list :: {:error, any} | {:ok, map()}
   @doc """
   Lists the currently available models, and provides basic information about each one such as the owner and availability.
   """
-  def list, do: get("/v1/models")
+  def list, do: Client.call(@url)
 
-  @spec describe(binary) :: {:error, any} | {:ok, Tesla.Env.t()}
+  @spec describe(binary) :: {:error, any} | {:ok, map()}
   @doc """
   Retrieves a model instance, providing basic information about the model such as the owner and permissioning.
   """
-  def describe(model_id), do: get("/v1/models/#{model_id}")
+  def describe(model_id), do: Client.call("#{@url}/#{model_id}")
 end

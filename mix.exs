@@ -28,7 +28,8 @@ defmodule Openai.MixProject do
       {:vex, "~> 0.9.0"},
       # Dev deps
       {:ex_doc, "~> 0.29"},
-      {:faker, ">= 0.0.0", only: [:dev, :test]}
+      {:faker, ">= 0.0.0", only: [:dev, :test]},
+      {:dialyxir, "> 0.0.0", only: [:dev, :test], runtime: false}
     ]
   end
 end

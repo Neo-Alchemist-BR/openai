@@ -17,7 +17,7 @@ defmodule Openai.Schemas.Out.Embeddings.Create do
   @type input :: String.t() | list(String.t())
 
   @typedoc """
-  A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+  A unique identifier representing your end-user, which can help Openai to monitor and detect abuse.
   [Learn more](https://beta.openai.com/docs/guides/safety-best-practices/end-user-ids).
   """
 

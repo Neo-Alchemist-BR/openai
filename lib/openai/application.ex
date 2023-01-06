@@ -4,10 +4,12 @@ defmodule Openai.Application do
   @moduledoc false
 
   use Application
+  alias Openai.Config
 
   @impl true
   def start(_type, _args) do
     children = [
+      Config
       # Starts a worker by calling: Openai.Worker.start_link(arg)
       # {Openai.Worker, arg}
     ]
