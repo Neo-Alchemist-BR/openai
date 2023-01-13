@@ -1,11 +1,20 @@
-<!-- livebook:{"autosave_interval_s":60,"persist_outputs":true} -->
+<!-- livebook:{"autosave_interval_s":30,"persist_outputs":true} -->
 
 # Testing Openai
 
 ```elixir
 Mix.install(
   [
-    {:openai, github: "Neo-Alchemist-BR/openai_elixir", branch: "main"}
+    {:openai, github: "Neo-Alchemist-BR/openai_elixir", branch: "feat/wrapping-routes"},
+    {:phoenix, "~> 1.6.15"},
+    {:phoenix_live_view, "~> 0.18"},
+    {:phoenix_html, "~> 3.2"},
+    {:kino_vega_lite, "~> 0.1.7"},
+    {:kino_maplibre, "~> 0.1.7"},
+    {:kino_db, "~> 0.2.1"},
+    {:kino_js, "~> 0.2.1"},
+    {:kino_slack, "~> 0.1.0"},
+    {:postgrex, "~> 0.16.3"}
   ],
   config: [
     openai: [
@@ -18,26 +27,381 @@ Mix.install(
 <!-- livebook:{"output":true} -->
 
 ```
-* Getting openai (https://github.com/Neo-Alchemist-BR/openai_elixir.git - origin/main)
-fatal: unable to access 'https://github.com/Neo-Alchemist-BR/openai_elixir.git/': Could not resolve host: github.com
-```
+* Updating openai (https://github.com/Neo-Alchemist-BR/openai_elixir.git - origin/feat/wrapping-routes)
+remote: Enumerating objects: 194, done.        
+remote: Counting objects: 100% (194/194), done.        
+remote: Compressing objects: 100% (135/135), done.        
+remote: Total 194 (delta 53), reused 181 (delta 40), pack-reused 0        
+Receiving objects: 100% (194/194), 500.20 KiB | 4.59 MiB/s, done.
+Resolving deltas: 100% (53/53), done.
+Resolving Hex dependencies...
+Resolution completed in 0.611s
+New:
+  castore 0.1.22
+  connection 1.1.0
+  db_connection 2.4.3
+  decimal 2.0.0
+  earmark_parser 1.4.29
+  ex_doc 0.29.1
+  exconstructor 1.2.8
+  finch 0.14.0
+  geo 3.4.3
+  hpax 0.1.2
+  jason 1.4.0
+  kino 0.8.0
+  kino_db 0.2.1
+  kino_maplibre 0.1.7
+  kino_slack 0.1.0
+  kino_vega_lite 0.1.7
+  makeup 1.1.0
+  makeup_elixir 0.16.0
+  makeup_erlang 0.1.1
+  maplibre 0.1.3
+  mime 2.0.3
+  mint 1.4.2
+  nimble_options 0.5.2
+  nimble_parsec 1.2.3
+  nimble_pool 0.2.6
+  phoenix 1.6.15
+  phoenix_html 3.2.0
+  phoenix_live_view 0.18.6
+  phoenix_pubsub 2.1.1
+  phoenix_template 1.0.0
+  phoenix_view 2.0.2
+  plug 1.14.0
+  plug_crypto 1.2.3
+  postgrex 0.16.5
+  req 0.3.4
+  table 0.1.2
+  telemetry 1.2.1
+  tesla 1.5.0
+  vega_lite 0.1.6
+  vex 0.9.0
+* Getting phoenix (Hex package)
+* Getting phoenix_live_view (Hex package)
+* Getting phoenix_html (Hex package)
+* Getting kino_vega_lite (Hex package)
+* Getting kino_maplibre (Hex package)
+* Getting kino_db (Hex package)
+* Getting postgrex (Hex package)
+* Getting kino_slack (Hex package)
+* Getting kino (Hex package)
+* Getting req (Hex package)
+* Getting finch (Hex package)
+* Getting jason (Hex package)
+* Getting mime (Hex package)
+* Getting castore (Hex package)
+* Getting mint (Hex package)
+* Getting nimble_options (Hex package)
+* Getting nimble_pool (Hex package)
+* Getting telemetry (Hex package)
+* Getting hpax (Hex package)
+* Getting table (Hex package)
+* Getting connection (Hex package)
+* Getting db_connection (Hex package)
+* Getting decimal (Hex package)
+* Getting maplibre (Hex package)
+* Getting geo (Hex package)
+* Getting vega_lite (Hex package)
+* Getting phoenix_template (Hex package)
+* Getting phoenix_pubsub (Hex package)
+* Getting phoenix_view (Hex package)
+* Getting plug (Hex package)
+* Getting plug_crypto (Hex package)
+* Getting tesla (Hex package)
+* Getting exconstructor (Hex package)
+* Getting vex (Hex package)
+* Getting ex_doc (Hex package)
+* Getting earmark_parser (Hex package)
+* Getting makeup_elixir (Hex package)
+* Getting makeup_erlang (Hex package)
+* Getting makeup (Hex package)
+* Getting nimble_parsec (Hex package)
+==> earmark_parser
+Compiling 1 file (.yrl)
+Compiling 2 files (.xrl)
+Compiling 3 files (.erl)
+Compiling 46 files (.ex)
+Generated earmark_parser app
+==> connection
+Compiling 1 file (.ex)
+Generated connection app
+==> decimal
+Compiling 4 files (.ex)
+Generated decimal app
+==> table
+Compiling 5 files (.ex)
+Generated table app
+==> vega_lite
+Compiling 5 files (.ex)
+Generated vega_lite app
+==> mime
+Compiling 1 file (.ex)
+Generated mime app
+==> nimble_options
+Compiling 3 files (.ex)
+Generated nimble_options app
+==> kino
+Compiling 37 files (.ex)
+Generated kino app
+==> kino_vega_lite
+Compiling 4 files (.ex)
+Generated kino_vega_lite app
+==> nimble_parsec
+Compiling 4 files (.ex)
+Generated nimble_parsec app
+===> Analyzing applications...
+===> Compiling telemetry
+==> jason
+Compiling 10 files (.ex)
+Generated jason app
+==> db_connection
+Compiling 14 files (.ex)
+Generated db_connection app
+==> phoenix_pubsub
+Compiling 11 files (.ex)
+Generated phoenix_pubsub app
+==> plug_crypto
+Compiling 5 files (.ex)
+Generated plug_crypto app
+==> hpax
+Compiling 4 files (.ex)
+Generated hpax app
+==> exconstructor
+Compiling 1 file (.ex)
+Generated exconstructor app
+==> plug
+Compiling 1 file (.erl)
+Compiling 41 files (.ex)
+Generated plug app
+==> phoenix_html
+Compiling 8 files (.ex)
+Generated phoenix_html app
+==> phoenix_template
+Compiling 4 files (.ex)
+Generated phoenix_template app
+==> phoenix_view
+Compiling 1 file (.ex)
+Generated phoenix_view app
+==> postgrex
+Compiling 64 files (.ex)
+Generated postgrex app
+==> geo
+Compiling 26 files (.ex)
+warning: Application.get_env/3 is discouraged in the module body, use Application.compile_env/3 instead
+  lib/geo.ex:32: Geo
 
-## Section
+warning: use Bitwise is deprecated. import Bitwise instead
+  lib/geo/utils.ex:3: Geo.Utils
 
-```elixir
-Application.get_all_env(:openai)
+warning: use Bitwise is deprecated. import Bitwise instead
+  lib/geo/wkb/decoder.ex:22: Geo.WKB.Decoder
+
+warning: use Bitwise is deprecated. import Bitwise instead
+  lib/geo/wkb/encoder.ex:22: Geo.WKB.Encoder
+
+Generated geo app
+==> makeup
+Compiling 44 files (.ex)
+Generated makeup app
+==> makeup_elixir
+Compiling 6 files (.ex)
+Generated makeup_elixir app
+==> makeup_erlang
+Compiling 3 files (.ex)
+warning: Application.get_env/3 is discouraged in the module body, use Application.compile_env/3 instead
+  lib/makeup/lexers/erlang_lexer.ex:250: Makeup.Lexers.ErlangLexer
+
+Generated makeup_erlang app
+==> ex_doc
+Compiling 25 files (.ex)
+Generated ex_doc app
+==> vex
+Compiling 25 files (.ex)
+Generated vex app
+==> nimble_pool
+Compiling 2 files (.ex)
+Generated nimble_pool app
+==> kino_db
+Compiling 4 files (.ex)
+warning: Mint.HTTP.connect/3 is undefined (module Mint.HTTP is not available or is yet to be defined)
+  lib/kino_db/connection_cell.ex:395: KinoDB.ConnectionCell.running_on_google_metadata?/0
+
+warning: Mint.HTTP.set_mode/2 is undefined (module Mint.HTTP is not available or is yet to be defined)
+  lib/kino_db/connection_cell.ex:396: KinoDB.ConnectionCell.running_on_google_metadata?/0
+
+Generated kino_db app
+==> castore
+Compiling 1 file (.ex)
+Generated castore app
+==> phoenix
+Compiling 69 files (.ex)
+Generated phoenix app
+==> phoenix_live_view
+Compiling 33 files (.ex)
+Generated phoenix_live_view app
+==> mint
+Compiling 1 file (.erl)
+Compiling 19 files (.ex)
+Generated mint app
+==> finch
+Compiling 13 files (.ex)
+Generated finch app
+==> req
+Compiling 5 files (.ex)
+Generated req app
+==> kino_slack
+Compiling 2 files (.ex)
+Generated kino_slack app
+==> maplibre
+Compiling 3 files (.ex)
+Generated maplibre app
+==> kino_maplibre
+Compiling 4 files (.ex)
+Generated kino_maplibre app
+==> tesla
+Compiling 30 files (.ex)
+warning: Application.get_env/3 is discouraged in the module body, use Application.compile_env/3 instead
+  lib/tesla/middleware/telemetry.ex:83: Tesla.Middleware.Telemetry
+
+warning: Application.get_env/3 is discouraged in the module body, use Application.compile_env/3 instead
+  lib/tesla/middleware/logger.ex:185: Tesla.Middleware.Logger
+
+warning: unused import Bitwise
+  lib/tesla/middleware/retry.ex:51
+
+Generated tesla app
+==> openai
+Compiling 51 files (.ex)
+warning: module attribute @url was set but never used
+  lib/openai/client/moderations.ex:4
+
+warning: unused alias Client
+  lib/openai/client/moderations.ex:2
+
+warning: unused alias Completions
+  lib/openai/client.ex:4
+
+warning: unused alias CreateImage
+  lib/openai/client.ex:9
+
+warning: unused alias Edits
+  lib/openai/client.ex:4
+
+warning: unused alias Embeddings
+  lib/openai/client.ex:4
+
+warning: unused alias Images
+  lib/openai/client.ex:4
+
+warning: unused alias Models
+  lib/openai/client.ex:4
+
+warning: unused alias Client
+  lib/openai/search.ex:2
+
+warning: Openai.Client.Search.run/2 is deprecated. use models completions instead
+
+  lib/openai/search.ex:6: Openai.Search.call/2
+
+warning: Openai.Client.Engines.describe/1 is deprecated. Use Openai.Client.Models instead
+
+  lib/openai/engines.ex:16: Openai.Engines.call/1
+
+warning: Openai.Client.Engines.list/0 is deprecated. Use Openai.Client.Models instead
+
+  lib/openai/engines.ex:8: Openai.Engines.call/0
+
+warning: Openai.Schemas.Out.Completions.new/1 is undefined (module Openai.Schemas.Out.Completions is not available or is yet to be defined)
+  lib/openai/completions.ex:6: Openai.Completions.fetch/1
+
+Generated openai app
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-"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"
+:ok
+```
+
+## Imagine
+
+```elixir
+prompt = "logo da linguagem de programação Elixir"
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+"logo da linguagem de programação Elixir"
 ```
 
 ```elixir
-%{prompt: "abobora"}
-|> Openai.Schemas.Out.Images.Create.new()
-|> dbg()
-|> Openai.Client.Images.create()
-|> dbg()
+%{data: [first, second, third, fourth, fifth] = data} =
+  %{prompt: prompt, n: 5}
+  # TODO: delegate to next command to Openai.CreateImage.new()    (?)
+  |> Openai.Schemas.Out.Images.Create.new()
+  |> Openai.create_image()
+
+:ok
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+
+12:17:40.432 [warn] Description: 'Server authenticity is not verified since certificate path validation is not enabled'
+     Reason: 'The option {verify, verify_peer} and one of the options \'cacertfile\' or \'cacerts\' are required to enable this.'
+
+
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+:ok
+```
+
+```elixir
+defmodule Render do
+  use Kino.JS
+
+  def new(html) do
+    Kino.JS.new(__MODULE__, html)
+  end
+
+  asset "main.js" do
+    """
+    export function init(ctx, html) {
+      ctx.root.innerHTML = html;
+    }
+    """
+  end
+end
+```
+
+<!-- livebook:{"output":true} -->
+
+```
+{:module, Render, <<70, 79, 82, 49, 0, 0, 9, ...>>, :ok}
+```
+
+```elixir
+Render.new("<img src=\"#{first.url}\">")
+```
+
+```elixir
+Render.new("<img src=\"#{second.url}\">")
+```
+
+```elixir
+Render.new("<img src=\"#{third.url}\">")
+```
+
+```elixir
+Render.new("<img src=\"#{fourth.url}\">")
+```
+
+```elixir
+Render.new("<img src=\"#{fifth.url}\">")
 ```

@@ -18,4 +18,4 @@ services:
 
 networks:
   livebook:
-    driver: local
+    driver: bridge
