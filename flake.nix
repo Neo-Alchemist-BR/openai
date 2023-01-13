@@ -1,59 +1,62 @@
 {
-  description = ''
-    Microservice to tooling of CX
-  '';
+  description = "OpenAI wrapper made in Elixir";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-22.05";
-    flake-utils.url = "github:numtide/flake-utils";
+    nixpkgs = { url = "github:NixOS/nixpkgs/nixpkgs-unstable"; };
+    flake-utils = { url = "github:numtide/flake-utils"; };
   };
 
   outputs = { self, nixpkgs, flake-utils }:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+        elixir_overlay = (self: super: rec {
+          erlang = super.erlangR25;
+          beamPackages = super.beam.packagesWith erlang;
+          elixir = beamPackages.elixir.override {
+            version = "1.14.2";
+            sha256 = "sha256-ABS+tXWm0vP3jb4ixWSi84Ltya7LHAuEkGMuAoZqHPA=";
+          };
+          hex = beamPackages.hex.override { inherit elixir;};
+          rebar3 = beamPackages.rebar3;
+          buildMix = super.beam.packages.erlang.buildMix'.override { inherit elixir erlang hex; };
+        }
+        );
 
-        exDev = pkgs.beam.packages.erlangR25.elixir;
-      in {
-        devShell = pkgs.mkShell {
-          name = "orchestrator_cx_ms";
-          buildInputs = with pkgs; [
-            gnumake
-            gcc
-            readline
-            openssl
-            zlib
-            libxml2
-            curl
-            libiconv
-            # my elixir derivation
-            exDev
-            beamPackages.rebar3
-            glibcLocales
-          ] ++ pkgs.lib.optional stdenv.isLinux [
-                inotify-tools
-                # observer gtk engine
-                gtk-engine-murrine
-              ]
-            ++ pkgs.lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks; [
-                CoreFoundation
-                CoreServices
-              ]);
+        inherit (nixpkgs.lib) optional;
+        pkgs = import nixpkgs {
+          inherit system;
+          overlays = [ elixir_overlay ];
+        };
 
-         # define shell startup command
-        shellHook = ''
-          # create local tmp folders
-          mkdir -p .nix-mix
-          mkdir -p .nix-hex
+      in
+      with pkgs;
+      rec  {
+        devShell =
+          mkShell {
+            name = "openai_elixir-shell";
 
-          mix local.hex --force --if-missing
-          mix local.rebar --force --if-missing
+            buildInputs = [
+              glibcLocalesUtf8
+              elixir
+            ] ++ lib.optionals stdenv.isLinux
+                [
+                libnotify # For ExUnit Notifier on Linux.
+                inotify-tools # For file_system on Linux.
+                ]
+              ++ lib.optionals stdenv.isDarwin (with darwin.apple_sdk.frameworks;
+                [
+                terminal-notifier # For ExUnit Notifier on macOS.
+                CoreFoundation CoreServices # For file_system on macOS.
+                ]);
 
-          # to not conflict with your host elixir
-          # version and supress warnings about standard
-          # libraries
-          export ERL_LIBS="$HEX_HOME/lib/erlang/lib"
-        '';
-      };
-    });
+          # Fixes locale issue on `nix-shell --pure` (at least on NixOS). See
+          # + https://github.com/NixOS/nix/issues/318#issuecomment-52986702
+          # + http://lists.linuxfromscratch.org/pipermail/lfs-support/2004-June/023900.html
+          # export LC_ALL=en_US.UTF-8
+          LOCALE_ARCHIVE = if pkgs.stdenv.isLinux then "${pkgs.glibcLocalesUtf8}/lib/locale/locale-archive" else "";
+          };
+
+      }
+    );
+
 }
