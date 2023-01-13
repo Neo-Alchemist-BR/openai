@@ -9,10 +9,8 @@ Mix.install(
     {:phoenix, "~> 1.6.15"},
     {:phoenix_live_view, "~> 0.18"},
     {:phoenix_html, "~> 3.2"},
-    {:kino_vega_lite, "~> 0.1.7"},
-    {:kino_maplibre, "~> 0.1.7"},
+    {:kino_dalle, github: "PJUllrich/kino_dalle"},
     {:kino_db, "~> 0.2.1"},
-    {:kino_js, "~> 0.2.1"},
     {:kino_slack, "~> 0.1.0"},
     {:postgrex, "~> 0.16.3"}
   ],
@@ -27,15 +25,21 @@ Mix.install(
 <!-- livebook:{"output":true} -->
 
 ```
-* Updating openai (https://github.com/Neo-Alchemist-BR/openai_elixir.git - origin/feat/wrapping-routes)
-remote: Enumerating objects: 194, done.        
-remote: Counting objects: 100% (194/194), done.        
-remote: Compressing objects: 100% (135/135), done.        
-remote: Total 194 (delta 53), reused 181 (delta 40), pack-reused 0        
-Receiving objects: 100% (194/194), 500.20 KiB | 4.59 MiB/s, done.
-Resolving deltas: 100% (53/53), done.
+* Getting openai (https://github.com/Neo-Alchemist-BR/openai_elixir.git - origin/feat/wrapping-routes)
+remote: Enumerating objects: 202, done.        
+remote: Counting objects: 100% (202/202), done.        
+remote: Compressing objects: 100% (140/140), done.        
+remote: Total 202 (delta 57), reused 187 (delta 42), pack-reused 0        
+Receiving objects: 100% (202/202), 504.46 KiB | 4.07 MiB/s, done.
+Resolving deltas: 100% (57/57), done.
+* Getting kino_dalle (https://github.com/PJUllrich/kino_dalle.git)
+remote: Enumerating objects: 53, done.        
+remote: Counting objects: 100% (53/53), done.        
+remote: Compressing objects: 100% (37/37), done.        
+remote: Total 53 (delta 12), reused 46 (delta 10), pack-reused 0        
+origin/HEAD set to main
 Resolving Hex dependencies...
-Resolution completed in 0.611s
+Resolution completed in 0.482s
 New:
   castore 0.1.22
   connection 1.1.0
@@ -45,18 +49,14 @@ New:
   ex_doc 0.29.1
   exconstructor 1.2.8
   finch 0.14.0
-  geo 3.4.3
   hpax 0.1.2
   jason 1.4.0
   kino 0.8.0
   kino_db 0.2.1
-  kino_maplibre 0.1.7
   kino_slack 0.1.0
-  kino_vega_lite 0.1.7
   makeup 1.1.0
   makeup_elixir 0.16.0
   makeup_erlang 0.1.1
-  maplibre 0.1.3
   mime 2.0.3
   mint 1.4.2
   nimble_options 0.5.2
@@ -75,16 +75,17 @@ New:
   table 0.1.2
   telemetry 1.2.1
   tesla 1.5.0
-  vega_lite 0.1.6
   vex 0.9.0
 * Getting phoenix (Hex package)
 * Getting phoenix_live_view (Hex package)
 * Getting phoenix_html (Hex package)
-* Getting kino_vega_lite (Hex package)
-* Getting kino_maplibre (Hex package)
 * Getting kino_db (Hex package)
-* Getting postgrex (Hex package)
 * Getting kino_slack (Hex package)
+* Getting postgrex (Hex package)
+* Getting connection (Hex package)
+* Getting db_connection (Hex package)
+* Getting decimal (Hex package)
+* Getting telemetry (Hex package)
 * Getting kino (Hex package)
 * Getting req (Hex package)
 * Getting finch (Hex package)
@@ -94,15 +95,8 @@ New:
 * Getting mint (Hex package)
 * Getting nimble_options (Hex package)
 * Getting nimble_pool (Hex package)
-* Getting telemetry (Hex package)
 * Getting hpax (Hex package)
 * Getting table (Hex package)
-* Getting connection (Hex package)
-* Getting db_connection (Hex package)
-* Getting decimal (Hex package)
-* Getting maplibre (Hex package)
-* Getting geo (Hex package)
-* Getting vega_lite (Hex package)
 * Getting phoenix_template (Hex package)
 * Getting phoenix_pubsub (Hex package)
 * Getting phoenix_view (Hex package)
@@ -132,9 +126,6 @@ Generated decimal app
 ==> table
 Compiling 5 files (.ex)
 Generated table app
-==> vega_lite
-Compiling 5 files (.ex)
-Generated vega_lite app
 ==> mime
 Compiling 1 file (.ex)
 Generated mime app
@@ -144,9 +135,6 @@ Generated nimble_options app
 ==> kino
 Compiling 37 files (.ex)
 Generated kino app
-==> kino_vega_lite
-Compiling 4 files (.ex)
-Generated kino_vega_lite app
 ==> nimble_parsec
 Compiling 4 files (.ex)
 Generated nimble_parsec app
@@ -186,21 +174,6 @@ Generated phoenix_view app
 ==> postgrex
 Compiling 64 files (.ex)
 Generated postgrex app
-==> geo
-Compiling 26 files (.ex)
-warning: Application.get_env/3 is discouraged in the module body, use Application.compile_env/3 instead
-  lib/geo.ex:32: Geo
-
-warning: use Bitwise is deprecated. import Bitwise instead
-  lib/geo/utils.ex:3: Geo.Utils
-
-warning: use Bitwise is deprecated. import Bitwise instead
-  lib/geo/wkb/decoder.ex:22: Geo.WKB.Decoder
-
-warning: use Bitwise is deprecated. import Bitwise instead
-  lib/geo/wkb/encoder.ex:22: Geo.WKB.Encoder
-
-Generated geo app
 ==> makeup
 Compiling 44 files (.ex)
 Generated makeup app
@@ -250,15 +223,12 @@ Generated finch app
 ==> req
 Compiling 5 files (.ex)
 Generated req app
+==> kino_dalle
+Compiling 2 files (.ex)
+Generated kino_dalle app
 ==> kino_slack
 Compiling 2 files (.ex)
 Generated kino_slack app
-==> maplibre
-Compiling 3 files (.ex)
-Generated maplibre app
-==> kino_maplibre
-Compiling 4 files (.ex)
-Generated kino_maplibre app
 ==> tesla
 Compiling 30 files (.ex)
 warning: Application.get_env/3 is discouraged in the module body, use Application.compile_env/3 instead
@@ -327,13 +297,13 @@ Generated openai app
 ## Imagine
 
 ```elixir
-prompt = "logo da linguagem de programação Elixir"
+prompt = "uma mãe segurando um bebê num dia de chuva"
 ```
 
 <!-- livebook:{"output":true} -->
 
 ```
-"logo da linguagem de programação Elixir"
+"uma mãe segurando um bebê num dia de chuva"
 ```
 
 ```elixir
@@ -350,7 +320,7 @@ prompt = "logo da linguagem de programação Elixir"
 
 ```
 
-12:17:40.432 [warn] Description: 'Server authenticity is not verified since certificate path validation is not enabled'
+14:09:14.194 [warn] Description: 'Server authenticity is not verified since certificate path validation is not enabled'
      Reason: 'The option {verify, verify_peer} and one of the options \'cacertfile\' or \'cacerts\' are required to enable this.'
 
 
@@ -404,4 +374,47 @@ Render.new("<img src=\"#{fourth.url}\">")
 
 ```elixir
 Render.new("<img src=\"#{fifth.url}\">")
+```
+
+<!-- livebook:{"attrs":{"count":"5","session_secret":"OPENAI_KEY","size":"256x256"},"chunks":null,"kind":"Elixir.KinoDalle.TaskCell","livebook_object":"smart_cell"} -->
+
+```elixir
+text_input = Kino.Input.textarea("Text")
+form = Kino.Control.form([text: text_input], submit: "Run")
+frame = Kino.Frame.new()
+size = "256x256"
+
+columns =
+  case size do
+    "256x256" -> 4
+    "512x512" -> 3
+    _ -> 2
+  end
+
+count =
+  "5"
+  |> String.to_integer()
+  |> case do
+    count when count < 1 -> 1
+    count when count > 10 -> 10
+    count -> count
+  end
+
+form
+|> Kino.Control.stream()
+|> Kino.listen(fn %{data: %{text: text}} ->
+  Kino.Frame.render(frame, Kino.Markdown.new("Running..."))
+
+  {:ok, res} =
+    KinoDalle.TaskCell.run_prompt(text, size, count, System.fetch_env!("LB_OPENAI_KEY"))
+
+  for %{"url" => url} <- res do
+    {:ok, res} = Req.get(url)
+    Kino.Image.new(res.body, :png)
+  end
+  |> Kino.Layout.grid(columns: columns)
+  |> then(&Kino.Frame.render(frame, &1))
+end)
+
+Kino.Layout.grid([form, frame], boxed: true, gap: 16)
 ```
